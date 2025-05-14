@@ -88,12 +88,11 @@ class GroupDetailSerializer(GroupSerializer):
 
 class RepaymentSerializer(serializers.ModelSerializer):
     from_user = serializers.SlugRelatedField(
-        source='from_user',
         slug_field='username',
         queryset=User.objects.all()
     )
+
     to_user = serializers.SlugRelatedField(
-        source='to_user',
         slug_field='username',
         queryset=User.objects.all()
     )

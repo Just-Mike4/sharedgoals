@@ -55,7 +55,7 @@ urlpatterns = [
         'delete': 'destroy'
     }), name='group-repayments-detail'),
     
-    # Summary and balance endpoints
+
     path('groups/<int:group_id>/summary/', GroupSummaryView.as_view(), name='group-summary'),
     path('groups/<int:group_id>/balances/', GroupBalancesView.as_view(), name='group-balances'),
 
