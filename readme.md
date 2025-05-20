@@ -87,6 +87,46 @@ Get authentication token.
 }
 ```
 
+## POST `/api/password-reset/`
+
+Request a password reset link to be sent to the user's email.
+**Request Body:**
+
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "Password reset link sent"
+}
+```
+
+
+## POST `/api/password-reset-confirm/<uid>/<token>/`
+
+Confirm the password reset using the unique link and set a new password.
+**Request Body:**
+
+```json
+{
+  "new_password": "NewSecurePassword123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "Password has been reset"
+}
+```
+
+
 ### 🔹 POST `api/groups/`
 Create a new group.
 

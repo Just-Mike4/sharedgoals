@@ -1,8 +1,7 @@
-from rest_framework import viewsets, permissions, status,serializers
-from rest_framework.decorators import action
+from rest_framework import viewsets, status,generics
 from rest_framework.response import Response
-from django.utils import timezone
-from .serializers import (RegisterationSerializer,LoginSerializer)
+from .serializers import (RegisterationSerializer,LoginSerializer,
+                        PasswordResetConfirmSerializer,PasswordResetSerializer)
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
@@ -34,3 +33,25 @@ class LoginViewSet(viewsets.ModelViewSet):
             raise InvalidToken(e.args[0])
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
+class PasswordResetView(generics.GenericAPIView):
+    serializer_class = PasswordResetSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "Password reset link sent"}, status=status.HTTP_200_OK)
+
+class PasswordResetConfirmView(generics.GenericAPIView):
+    serializer_class = PasswordResetConfirmSerializer
+
+    def post(self, request, uid, token, *args, **kwargs):
+        data = {
+            'uid': uid,
+            'token': token,
+            'new_password': request.data.get('new_password')
+        }
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "Password has been reset"}, status=status.HTTP_200_OK)

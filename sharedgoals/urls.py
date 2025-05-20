@@ -20,7 +20,7 @@ from rest_framework.routers import DefaultRouter
 from expenses.views import (GroupViewSet, GroupExpenseViewSet,
                             GroupBalancesView,GroupRepaymentViewSet,
                             GroupSummaryView)
-from users.views import RegisterationViewSet, LoginViewSet
+from users.views import RegisterationViewSet, LoginViewSet,PasswordResetConfirmView,PasswordResetView
 
 router = DefaultRouter()
 router.register(r'groups', GroupViewSet)
@@ -31,6 +31,8 @@ urlpatterns = [
 
     path("admin/", admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/password-reset/', PasswordResetView.as_view(), name='password-reset'),
+    path('api/password-reset-confirm/<uid>/<token>/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
     path('groups/<int:group_id>/expenses/', GroupExpenseViewSet.as_view({
         'get': 'list',
         'post': 'create'
